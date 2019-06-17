@@ -51,3 +51,4 @@ Model 0 best validation rmse = 0.647941 on epoch 28
 Model 0 test rmse = 0.645587
 Ensemble test rmse = 0.645587
 Fold 1
+Fold 0

@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from .predict import predict
+from chemprop.train.predict import predict
 from chemprop.data import MoleculeDataset
 from chemprop.data.utils import get_data, get_data_from_smiles
 from chemprop.utils import load_args, load_checkpoint, load_scalers
@@ -129,3 +129,66 @@ def make_predictions(args: Namespace, smiles: List[str] = None) -> List[Optional
             writer.writerow(row)
 
     return avg_preds
+
+def predict_smile(checkpoint_path: str, smile: str):
+    smiles = [smile]
+    """
+        Makes predictions. If smiles is provided, makes predictions on smiles. Otherwise makes predictions on args.test_data.
+
+        :param args: Arguments.
+        :param smiles: Smiles to make predictions on.
+        :return: A list of lists of target predictions.
+        """
+    args = Namespace()
+    # print('Loading training args')
+    scaler, features_scaler = load_scalers(checkpoint_path)
+    train_args = load_args(checkpoint_path)
+
+    # Update args with training arguments
+    for key, value in vars(train_args).items():
+        if not hasattr(args, key):
+            setattr(args, key, value)
+
+    # print('Loading data')
+    if smiles is not None:
+        test_data = get_data_from_smiles(smiles=smiles, skip_invalid_smiles=False)
+    else:
+        print("Enter Valid Smile String")
+        return
+
+    # print('Validating SMILES')
+    valid_indices = [i for i in range(len(test_data)) if test_data[i].mol is not None]
+    full_data = test_data
+    test_data = MoleculeDataset([test_data[i] for i in valid_indices])
+
+    # Edge case if empty list of smiles is provided
+    if len(test_data) == 0:
+        return [None] * len(full_data)
+
+
+    # Normalize features
+    if train_args.features_scaling:
+        test_data.normalize_features(features_scaler)
+
+    # Predict with each model individually and sum predictions
+    if args.dataset_type == 'multiclass':
+        sum_preds = np.zeros((len(test_data), args.num_tasks, args.multiclass_num_classes))
+    else:
+        sum_preds = np.zeros((len(test_data), args.num_tasks))
+
+    model = load_checkpoint(checkpoint_path, cuda=args.cuda)
+    model_preds = predict(
+        model=model,
+        data=test_data,
+        batch_size=1,
+        scaler=scaler
+    )
+    sum_preds += np.array(model_preds)
+
+    # Ensemble predictions
+    return sum_preds[0][0]
+
+#Debug
+
+
+# print(predict_smile("model.pt","Fc1ccc(cc1)C(OCCC1CCN(C[C@@H]2C[C@H]2c2ccccc2)CC1)c1ccc(F)cc1"))
