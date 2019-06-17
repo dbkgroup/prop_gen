@@ -77,7 +77,7 @@ def molecule_arg_parser():
     # parser.add_argument('--name_load', type=str, default='test')
     parser.add_argument('--dataset', type=str, default='zinc',help='caveman; grid; ba; zinc; gdb')
     parser.add_argument('--dataset_load', type=str, default='zinc')
-    parser.add_argument('--reward_type', type=str, default='logppen',help='logppen;logp_target;qed;qedsa;qed_target;mw_target;gan')
+    parser.add_argument('--reward_type', type=str, default='logppen',help='logppen;logp_target;qed;qedsa;qed_target;mw_target;gan;pki')
     parser.add_argument('--reward_target', type=float, default=0.5,help='target reward value')
     parser.add_argument('--logp_ratio', type=float, default=1)
     parser.add_argument('--qed_ratio', type=float, default=1)
@@ -123,6 +123,7 @@ def molecule_arg_parser():
     parser.add_argument('--bn', type=int, default=0)
     parser.add_argument('--name_full',type=str,default='')
     parser.add_argument('--name_full_load',type=str,default='')
+    parser.add_argument('--model_path', type=str, default='')
 
     return parser
 

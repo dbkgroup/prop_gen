@@ -19,6 +19,9 @@ import csv
 from contextlib import contextmanager
 import sys, os
 
+
+###### Property Prediction Model Import ##########
+
 # block std out
 @contextmanager
 def nostdout():
@@ -121,6 +124,10 @@ class MoleculeEnv(gym.Env):
         elif data_type=='zinc':
             possible_atoms = ['C', 'N', 'O', 'S', 'P', 'F', 'I', 'Cl',
                               'Br']  # ZINC
+        elif data_type=='dopamine':
+            possible_atoms = ['C', 'N', 'O', 'S', 'F', 'I', 'Cl',
+                              'Br']  # Dopamine binding dataset
+
         if self.has_feature:
             self.possible_formal_charge = np.array([-1, 0, 1])
             self.possible_implicit_valence = np.array([-1,0, 1, 2, 3, 4])
@@ -157,6 +164,8 @@ class MoleculeEnv(gym.Env):
                 self.max_atom = 38 + len(possible_atoms) + self.min_action # ZINC
             else:
                 self.max_atom = 38 + len(possible_atoms) # ZINC  + self.min_action
+        elif data_type=='dopamine':
+            self.max_atom = 45 + len(possible_atoms)
 
         self.logp_ratio = logp_ratio
         self.qed_ratio = qed_ratio
@@ -177,6 +186,9 @@ class MoleculeEnv(gym.Env):
         elif data_type=='zinc':
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
+        elif data_type=='dopamine':
+            path = os.path.join(os.path.dirname(cwd), 'dataset',
+                                '250k_rndm_zinc_drugs_clean_sorted.smi')
         self.dataset = gdb_dataset(path)
 
         ## load scaffold data if necessary
