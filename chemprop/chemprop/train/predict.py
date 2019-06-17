@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from tqdm import trange
 
-from chemprop.data import MoleculeDataset, StandardScaler
+from chemprop.chemprop.data import MoleculeDataset, StandardScaler
 
 
 def predict(model: nn.Module,

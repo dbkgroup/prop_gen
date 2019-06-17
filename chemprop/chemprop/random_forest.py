@@ -8,11 +8,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
 from tqdm import trange, tqdm
 
-from chemprop.data import MoleculeDataset
-from chemprop.data.utils import get_data, split_data
-from chemprop.features import get_features_generator
-from chemprop.train.evaluate import evaluate_predictions
-from chemprop.utils import get_metric_func
+from chemprop.chemprop.data import MoleculeDataset
+from chemprop.chemprop.data.utils import get_data, split_data
+from chemprop.chemprop.features import get_features_generator
+from chemprop.chemprop.train.evaluate import evaluate_predictions
+from chemprop.chemprop.utils import get_metric_func
 
 
 def single_task_random_forest(train_data: MoleculeDataset,

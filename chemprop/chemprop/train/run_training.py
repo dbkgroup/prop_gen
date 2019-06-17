@@ -15,11 +15,11 @@ from torch.optim.lr_scheduler import ExponentialLR
 from .evaluate import evaluate, evaluate_predictions
 from .predict import predict
 from .train import train
-from chemprop.data import StandardScaler
-from chemprop.data.utils import get_class_sizes, get_data, get_task_names, split_data
-from chemprop.models import build_model
-from chemprop.nn_utils import param_count
-from chemprop.utils import build_optimizer, build_lr_scheduler, get_loss_func, get_metric_func, load_checkpoint,\
+from chemprop.chemprop.data import StandardScaler
+from chemprop.chemprop.data.utils import get_class_sizes, get_data, get_task_names, split_data
+from chemprop.chemprop.models import build_model
+from chemprop.chemprop.nn_utils import param_count
+from chemprop.chemprop.utils import build_optimizer, build_lr_scheduler, get_loss_func, get_metric_func, load_checkpoint,\
     makedirs, save_checkpoint
 
 

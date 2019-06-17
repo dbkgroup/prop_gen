@@ -11,9 +11,9 @@ import torch.nn as nn
 from torch.optim import Adam, Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
 
-from chemprop.data import StandardScaler
-from chemprop.models import build_model, MoleculeModel
-from chemprop.nn_utils import NoamLR
+from chemprop.chemprop.data import StandardScaler
+from chemprop.chemprop.models import build_model, MoleculeModel
+from chemprop.chemprop.nn_utils import NoamLR
 
 
 def makedirs(path: str, isfile: bool = False):

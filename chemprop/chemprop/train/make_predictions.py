@@ -6,10 +6,10 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from chemprop.train.predict import predict
-from chemprop.data import MoleculeDataset
-from chemprop.data.utils import get_data, get_data_from_smiles
-from chemprop.utils import load_args, load_checkpoint, load_scalers
+from chemprop.chemprop.train.predict import predict
+from chemprop.chemprop.data import MoleculeDataset
+from chemprop.chemprop.data.utils import get_data, get_data_from_smiles
+from chemprop.chemprop.utils import load_args, load_checkpoint, load_scalers
 
 
 def make_predictions(args: Namespace, smiles: List[str] = None) -> List[Optional[List[float]]]:
@@ -191,4 +191,4 @@ def predict_smile(checkpoint_path: str, smile: str):
 #Debug
 
 
-# print(predict_smile("model.pt","Fc1ccc(cc1)C(OCCC1CCN(C[C@@H]2C[C@H]2c2ccccc2)CC1)c1ccc(F)cc1"))
+print(predict_smile("model.pt","Fc1ccc(cc1)C(OCCC1CCN(C[C@@H]2C[C@H]2c2ccccc2)CC1)c1ccc(F)cc1"))

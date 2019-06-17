@@ -7,7 +7,7 @@ from torch.utils.data.dataset import Dataset
 from rdkit import Chem
 
 from .scaler import StandardScaler
-from chemprop.features import get_features_generator
+from chemprop.chemprop.features import get_features_generator
 
 
 class MoleculeDatapoint:

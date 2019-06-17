@@ -4,7 +4,7 @@ from typing import Callable, List
 import torch.nn as nn
 
 from .predict import predict
-from chemprop.data import MoleculeDataset, StandardScaler
+from chemprop.chemprop.data import MoleculeDataset, StandardScaler
 
 
 def evaluate_predictions(preds: List[List[float]],

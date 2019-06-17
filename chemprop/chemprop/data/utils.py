@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 from .data import MoleculeDatapoint, MoleculeDataset
 from .scaffold import log_scaffold_stats, scaffold_split
-from chemprop.features import load_features
+from chemprop.chemprop.features import load_features
 
 
 def get_task_names(path: str, use_compound_names: bool = False) -> List[str]:

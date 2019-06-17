@@ -6,8 +6,8 @@ from typing import Tuple
 import numpy as np
 
 from .run_training import run_training
-from chemprop.data.utils import get_task_names
-from chemprop.utils import makedirs
+from chemprop.chemprop.data.utils import get_task_names
+from chemprop.chemprop.utils import makedirs
 
 
 def cross_validate(args: Namespace, logger: Logger = None) -> Tuple[float, float]:

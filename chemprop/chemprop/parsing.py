@@ -6,8 +6,8 @@ import pickle
 
 import torch
 
-from chemprop.utils import makedirs
-from chemprop.features import get_available_features_generators
+from chemprop.chemprop.utils import makedirs
+from chemprop.chemprop.features import get_available_features_generators
 
 
 def add_predict_args(parser: ArgumentParser):

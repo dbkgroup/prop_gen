@@ -1,6 +1,6 @@
 """Trains a model on a dataset."""
 
-from chemprop.parsing import parse_train_args
+from chemprop.chemprop.parsing import parse_train_args
 from chemprop.train import cross_validate
 from chemprop.utils import create_logger
 
