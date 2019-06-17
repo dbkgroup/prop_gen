@@ -8,7 +8,6 @@ gym-molecule/gym_molecule.egg-info
 *.idea
 *.DS_Store
 *.vscode
-*.csv
 *.pt
 *.json
 *.sqlite3
