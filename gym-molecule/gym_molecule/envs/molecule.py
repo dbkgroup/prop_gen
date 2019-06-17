@@ -19,8 +19,20 @@ import csv
 from contextlib import contextmanager
 import sys, os
 
+from argparse import Namespace
 
 ###### Property Prediction Model Import ##########
+from typing import List
+
+import torch
+import torch.nn as nn
+from tqdm import trange
+
+from chemprop.chemprop.data import MoleculeDataset, StandardScaler
+from chemprop.chemprop.data.utils import get_data, get_data_from_smiles
+from chemprop.chemprop.utils import load_args, load_checkpoint, load_scalers
+
+
 
 # block std out
 @contextmanager
@@ -100,7 +112,7 @@ class MoleculeEnv(gym.Env):
     def __init__(self):
         pass
 
-    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20,force_final=False):
+    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20,force_final=False,model_path=''):
         '''
         own init function, since gym does not support passing argument
         '''
@@ -177,6 +189,31 @@ class MoleculeEnv(gym.Env):
         self.observation_space['node'] = gym.Space(shape=[1, self.max_atom, self.d_n])
 
         self.counter = 0
+
+        ## Load model if it exists
+        if model_path != '':
+            self.model = load_checkpoint(model_path, cuda=False)
+            args = Namespace()
+            # print('Loading training args')
+            scaler, features_scaler = load_scalers(model_path)
+            train_args = load_args(model_path)
+
+            # Update args with training arguments
+            for key, value in vars(train_args).items():
+                if not hasattr(args, key):
+                    setattr(args, key, value)
+
+            self.args = args
+            self.train_args = train_args
+            self.scaler = scaler
+            self.features_scaler = features_scaler
+
+        else:
+            self.model = None
+            self.args = None
+            self.train_args = None
+            self.scaler = None
+            self.features_scaler = None
 
         ## load expert data
         cwd = os.path.dirname(__file__)
@@ -316,7 +353,8 @@ class MoleculeEnv(gym.Env):
                         # reward_final += reward_target(final_mol,target=self.reward_target,ratio=40,val_max=2,val_min=-2,func=rdMolDescriptors.CalcExactMolWt)
                         # reward_final += reward_target_mw(final_mol,target=self.reward_target)
                         reward_final += reward_target_new(final_mol, rdMolDescriptors.CalcExactMolWt,x_start=self.reward_target, x_mid=self.reward_target+25)
-
+                    elif self.reward_type == 'pki':
+                        reward_final += reward_property(self.model,final_mol,self.scaler, self.features_scaler, self.train_args)
 
                     elif self.reward_type == 'gan':
                         reward_final = 0
@@ -1388,6 +1426,33 @@ def reward_penalized_log_p(mol):
     normalized_cycle = (cycle_score - cycle_mean) / cycle_std
 
     return normalized_log_p + normalized_SA + normalized_cycle
+
+
+
+#########################Molecular Property Reward################################################
+def reward_property(model,mol,scaler,features_scaler,train_args):
+    """
+        Reward that consists of the final property that has to be optimized
+        :param model: Model for property prediction
+        :param mol: rdkit mol object
+        :return: float
+        """
+    preds = []
+    smile = Chem.MolToSmiles(mol)
+    smiles = [smile]
+    test_data = get_data_from_smiles(smiles=smiles, skip_invalid_smiles=False)
+    if train_args.features_scaling:
+        test_data.normalize_features(features_scaler)
+
+    smiles_batch,features_batch = test_data.smiles(), test_data.features()
+    batch_preds = model(smiles_batch,features_batch)
+    if scaler is not None:
+        batch_preds = scaler.inverse_transform(batch_preds)
+    batch_preds = batch_preds.tolist()
+    preds.extend(batch_preds)
+    reward = preds[0][0]
+    return reward
+
 
 
 # # TEST compare with junction tree paper examples from Figure 7
