@@ -26,7 +26,8 @@ def train(args,seed,writer=None):
     # sess = tf.Session(config=config)
     # sess.__enter__()
     config = tf.ConfigProto(allow_soft_placement=True)
-    config.gpu_options.allow_growth = True
+    # config.gpu_options.allow_growth = True
+    config.gpu_options.per_process_gpu_memory_fraction=0.25
     sess = tf.Session(config=config)
     sess.__enter__()
 
