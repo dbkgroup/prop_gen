@@ -168,6 +168,8 @@ def get_loss_func(args: Namespace) -> nn.Module:
     if args.dataset_type == 'multiclass':
         return nn.CrossEntropyLoss(reduction='none')
 
+    #todo: change the loss function here
+
     raise ValueError(f'Dataset type "{args.dataset_type}" not supported.')
 
 

@@ -28,6 +28,7 @@ import torch
 import torch.nn as nn
 from tqdm import trange
 
+from chemprop.chemprop.train.predict import predict
 from chemprop.chemprop.data import MoleculeDataset, StandardScaler
 from chemprop.chemprop.data.utils import get_data, get_data_from_smiles
 from chemprop.chemprop.utils import load_args, load_checkpoint, load_scalers
@@ -112,7 +113,7 @@ class MoleculeEnv(gym.Env):
     def __init__(self):
         pass
 
-    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20,force_final=False,model_path=''):
+    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20, model_path='',force_final=False):
         '''
         own init function, since gym does not support passing argument
         '''
@@ -354,8 +355,8 @@ class MoleculeEnv(gym.Env):
                         # reward_final += reward_target_mw(final_mol,target=self.reward_target)
                         reward_final += reward_target_new(final_mol, rdMolDescriptors.CalcExactMolWt,x_start=self.reward_target, x_mid=self.reward_target+25)
                     elif self.reward_type == 'pki':
-                        reward_final += reward_property(self.model,final_mol,self.scaler, self.features_scaler, self.train_args)
-
+                        reward_final += reward_property(self.model,final_mol,self.scaler, self.features_scaler, self.train_args, self.args)
+                      #todo: check the reward_property function  ##The control is coming here at least.
                     elif self.reward_type == 'gan':
                         reward_final = 0
                     else:
@@ -1430,28 +1431,52 @@ def reward_penalized_log_p(mol):
 
 
 #########################Molecular Property Reward################################################
-def reward_property(model,mol,scaler,features_scaler,train_args):
+def reward_property(model,mol,scaler,features_scaler,train_args,args):
     """
         Reward that consists of the final property that has to be optimized
         :param model: Model for property prediction
         :param mol: rdkit mol object
         :return: float
         """
-    preds = []
     smile = Chem.MolToSmiles(mol)
+    # print("Smile Generated",smile)
     smiles = [smile]
-    test_data = get_data_from_smiles(smiles=smiles, skip_invalid_smiles=False)
+
+    # print('Loading data')
+    if smiles is not None:
+        test_data = get_data_from_smiles(smiles=smiles, skip_invalid_smiles=False)
+    else:
+        print("Enter Valid Smile String")
+        return
+
+    # print('Validating SMILES')
+    valid_indices = [i for i in range(len(test_data)) if test_data[i].mol is not None]
+    full_data = test_data
+    test_data = MoleculeDataset([test_data[i] for i in valid_indices])
+
+    # Edge case if empty list of smiles is provided
+    if len(test_data) == 0:
+        return [None] * len(full_data)
+
+    # Normalize features
     if train_args.features_scaling:
         test_data.normalize_features(features_scaler)
 
-    smiles_batch,features_batch = test_data.smiles(), test_data.features()
-    batch_preds = model(smiles_batch,features_batch)
-    if scaler is not None:
-        batch_preds = scaler.inverse_transform(batch_preds)
-    batch_preds = batch_preds.tolist()
-    preds.extend(batch_preds)
-    reward = preds[0][0]
-    return reward
+    if args.dataset_type == 'multiclass':
+        sum_preds = np.zeros((len(test_data), args.num_tasks, args.multiclass_num_classes))
+    else:
+        sum_preds = np.zeros((len(test_data), args.num_tasks))
+
+    model_preds = predict(
+        model=model,
+        data=test_data,
+        batch_size=1,
+        scaler=scaler
+    )
+    sum_preds += np.array(model_preds)
+
+    # Ensemble predictions
+    return sum_preds[0][0]
 
 
 
@@ -1533,6 +1558,7 @@ if __name__ == '__main__':
     ## debug
     m_env = MoleculeEnv()
     m_env.init(data_type='zinc',has_feature=True,is_conditional=True)
+
 
 
 

@@ -27,7 +27,7 @@ def train(args,seed,writer=None):
     # sess.__enter__()
     config = tf.ConfigProto(allow_soft_placement=True)
     # config.gpu_options.allow_growth = True
-    config.gpu_options.per_process_gpu_memory_fraction=0.25
+    config.gpu_options.per_process_gpu_memory_fraction=0.04
     sess = tf.Session(config=config)
     sess.__enter__()
 
@@ -37,6 +37,9 @@ def train(args,seed,writer=None):
         logger.configure(format_strs=[])
     workerseed = seed + 10000 * MPI.COMM_WORLD.Get_rank()
     set_global_seeds(workerseed)
+
+    if args.model_path != '':
+        args.model_path = os.path.abspath(args.model_path)
     if args.env=='molecule':
         env = gym.make('molecule-v0')
         env.init(data_type=args.dataset,logp_ratio=args.logp_ratio,qed_ratio=args.qed_ratio,sa_ratio=args.sa_ratio,reward_step_total=args.reward_step_total,is_normalize=args.normalize_adj,reward_type=args.reward_type,reward_target=args.reward_target,has_feature=bool(args.has_feature),is_conditional=bool(args.is_conditional),conditional=args.conditional,max_action=args.max_action,min_action=args.min_action, model_path=args.model_path) # remember call this after gym.make!!
@@ -75,7 +78,7 @@ def molecule_arg_parser():
     parser.add_argument('--name', type=str, default='test_conditional')
     parser.add_argument('--name_load', type=str, default='0new_concatno_mean_layer3_expert1500')
     # parser.add_argument('--name_load', type=str, default='test')
-    parser.add_argument('--dataset', type=str, default='zinc',help='caveman; grid; ba; zinc; gdb')
+    parser.add_argument('--dataset', type=str, default='zinc',help='caveman; grid; ba; zinc; gdb; dopamine')
     parser.add_argument('--dataset_load', type=str, default='zinc')
     parser.add_argument('--reward_type', type=str, default='logppen',help='logppen;logp_target;qed;qedsa;qed_target;mw_target;gan;pki')
     parser.add_argument('--reward_target', type=float, default=0.5,help='target reward value')

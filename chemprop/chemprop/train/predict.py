@@ -27,7 +27,7 @@ def predict(model: nn.Module,
 
     num_iters, iter_step = len(data), batch_size
 
-    for i in trange(0, num_iters, iter_step):
+    for i in range(0, num_iters, iter_step):
         # Prepare batch
         mol_batch = MoleculeDataset(data[i:i + batch_size])
         smiles_batch, features_batch = mol_batch.smiles(), mol_batch.features()
