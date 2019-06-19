@@ -28,10 +28,10 @@ import torch
 import torch.nn as nn
 from tqdm import trange
 
-from chemprop.chemprop.train.predict import predict
-from chemprop.chemprop.data import MoleculeDataset, StandardScaler
-from chemprop.chemprop.data.utils import get_data, get_data_from_smiles
-from chemprop.chemprop.utils import load_args, load_checkpoint, load_scalers
+from chemprop.train.predict import predict
+from chemprop.data import MoleculeDataset, StandardScaler
+from chemprop.data.utils import get_data, get_data_from_smiles
+from chemprop.utils import load_args, load_checkpoint, load_scalers
 
 
 
