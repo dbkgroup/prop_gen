@@ -121,7 +121,7 @@ def molecule_arg_parser():
     parser.add_argument('--mask_null', type=int, default=0)
     parser.add_argument('--is_conditional', type=int, default=0) # default 0
     parser.add_argument('--conditional', type=str, default='low') # default 0
-    parser.add_argument('--max_action', type=int, default=128) # default 0
+    parser.add_argument('--max_action', type=int, default=128) # default 0 #todo:try experimenting with this value of max_action
     parser.add_argument('--min_action', type=int, default=20) # default 0
     parser.add_argument('--bn', type=int, default=0)
     parser.add_argument('--name_full',type=str,default='')

@@ -1,8 +1,8 @@
 import csv
 import numpy as np
 import os
-infile = "dopamine_processed.csv"
-outfile = "dopamine.csv"
+infile = "dopamine_receptors.csv"
+outfile = "dopamine_less.csv"
 if os.path.exists(outfile):
     os.remove(outfile)
 with open(infile, 'r', newline='') as f:

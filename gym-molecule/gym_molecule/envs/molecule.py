@@ -178,7 +178,7 @@ class MoleculeEnv(gym.Env):
             else:
                 self.max_atom = 38 + len(possible_atoms) # ZINC  + self.min_action
         elif data_type=='dopamine':
-            self.max_atom = 45 + len(possible_atoms)
+            self.max_atom = 81 + len(possible_atoms)
 
         self.logp_ratio = logp_ratio
         self.qed_ratio = qed_ratio
@@ -226,7 +226,7 @@ class MoleculeEnv(gym.Env):
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
         elif data_type=='dopamine':
             path = os.path.join(os.path.dirname(cwd), 'dataset',
-                                '250k_rndm_zinc_drugs_clean_sorted.smi')
+                                'Dopamine_dataset.csv')
         self.dataset = gdb_dataset(path)
 
         ## load scaffold data if necessary
@@ -299,7 +299,7 @@ class MoleculeEnv(gym.Env):
         if self.is_conditional:
             terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.shape[0]-self.min_action or self.counter >= self.max_action or stop) and self.counter >= self.min_action
         else:
-            terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.shape[0] or self.counter >= self.max_action or stop) and self.counter >= self.min_action
+            terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.s6hape[0] or self.counter >= self.max_action or stop) and self.counter >= self.min_action
         if terminate_condition or self.force_final:
             # default reward
             reward_valid = 2
