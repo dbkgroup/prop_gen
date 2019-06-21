@@ -22,6 +22,10 @@ from chemprop.nn_utils import param_count
 from chemprop.utils import build_optimizer, build_lr_scheduler, get_loss_func, get_metric_func, load_checkpoint,\
     makedirs, save_checkpoint
 
+##### Matplotlib
+import matplotlib.pyplot as plt
+
+
 
 def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     """
@@ -42,6 +46,7 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
 
     # Print args
     debug(pformat(vars(args)))
+
 
     # Get data
     debug('Loading data')
@@ -139,6 +144,13 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     else:
         sum_test_preds = np.zeros((len(test_smiles), args.num_tasks))
 
+    #Setup val set evaluation
+    val_smiles, val_targets = val_data.smiles(), val_data.targets()
+    if args.dataset_type == 'multiclass':
+        sum_val_preds = np.zeros((len(val_smiles), args.num_tasks, args.multiclass_num_classes))
+    else:
+        sum_val_preds = np.zeros((len(val_smiles), args.num_tasks))
+
     # Train ensemble of models
     for model_idx in range(args.ensemble_size):
         # Tensorboard writer
@@ -188,6 +200,7 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
             )
             if isinstance(scheduler, ExponentialLR):
                 scheduler.step()
+
             val_scores = evaluate(
                 model=model,
                 data=val_data,
@@ -198,6 +211,8 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
                 scaler=scaler,
                 logger=logger
             )
+
+
 
             # Average validation score
             avg_val_score = np.nanmean(val_scores)
@@ -222,6 +237,14 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
 
         #todo: Perhaps change code here in order to analyze the model on the trained data
 
+        val_preds = predict(
+            model=model,
+            data=val_data,
+            batch_size=args.batch_size,
+            scaler=scaler
+        )
+
+
         test_preds = predict(
             model=model,
             data=test_data,
@@ -236,6 +259,9 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
             dataset_type=args.dataset_type,
             logger=logger
         )
+
+        if len(val_preds) != 0:
+            sum_val_preds += np.array(val_preds)
 
         if len(test_preds) != 0:
             sum_test_preds += np.array(test_preds)
@@ -253,6 +279,7 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
 
     # Evaluate ensemble on test set
     avg_test_preds = (sum_test_preds / args.ensemble_size).tolist()
+    avg_val_preds = (sum_val_preds/ args.ensemble_size).tolist()
 
     ensemble_scores = evaluate_predictions(
         preds=avg_test_preds,
@@ -263,6 +290,20 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
         logger=logger
     )
 
+
+    print("Test Prediction Shape:- ", np.array(avg_test_preds).shape)
+
+    avg_test_preds = np.array(avg_test_preds).reshape(1,-1)
+    test_targets = np.array(test_targets).reshape(1,-1)
+    avg_val_preds = np.array(avg_val_preds).reshape(1,-1)
+    val_targets = np.array(test_targets).reshape(1, -1)
+
+    plt.plot(avg_test_preds + avg_val_preds,test_targets + val_targets,'rx')
+    x = np.linspace(-7, 3, 100)
+    y = x
+    plt.plot(x,y,'-g')
+    plt.savefig("Prediction_Distriution.png")
+    plt.show()
     # Average ensemble score
     avg_ensemble_test_score = np.nanmean(ensemble_scores)
     info(f'Ensemble test {args.metric} = {avg_ensemble_test_score:.6f}')
