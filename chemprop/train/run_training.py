@@ -298,13 +298,22 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     avg_val_preds = np.array(avg_val_preds).reshape(1,-1)
     val_targets = np.array(test_targets).reshape(1, -1)
 
+    smaller_count = np.sum(avg_test_preds < test_targets)
+    smaller_frac = smaller_count / (avg_test_preds.shape[1])
+    print("Smaller_Fraction: ", smaller_frac)
+
     # plt.plot(np.concatenate((avg_test_preds,avg_val_preds) ,axis=1),np.concatenate((test_targets,val_targets), axis=1), 'rx')
-    plt.plot(avg_test_preds,test_targets,'rx')
+    plt.plot(avg_test_preds,test_targets,'bx')
     x = np.linspace(-7, 3, 100)
     y = x
     plt.plot(x,y,'-g')
+    plt.xlabel("Test Predictions")
+    plt.ylabel("Test Targets")
     plt.savefig("Prediction_Distriution.png")
     plt.show()
+
+
+
     # Average ensemble score
     avg_ensemble_test_score = np.nanmean(ensemble_scores)
     info(f'Ensemble test {args.metric} = {avg_ensemble_test_score:.6f}')

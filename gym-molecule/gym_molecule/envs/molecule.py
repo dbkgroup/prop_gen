@@ -299,7 +299,7 @@ class MoleculeEnv(gym.Env):
         if self.is_conditional:
             terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.shape[0]-self.min_action or self.counter >= self.max_action or stop) and self.counter >= self.min_action
         else:
-            terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.s6hape[0] or self.counter >= self.max_action or stop) and self.counter >= self.min_action
+            terminate_condition = (self.mol.GetNumAtoms() >= self.max_atom-self.possible_atom_types.shape[0] or self.counter >= self.max_action or stop) and self.counter >= self.min_action
         if terminate_condition or self.force_final:
             # default reward
             reward_valid = 2
