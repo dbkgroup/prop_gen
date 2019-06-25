@@ -80,7 +80,7 @@ def add_train_args(parser: ArgumentParser):
     parser.add_argument('--checkpoint_path', type=str, default=None,
                         help='Path to model checkpoint (.pt file)')
     parser.add_argument('--dataset_type', type=str,
-                        choices=['classification', 'regression', 'multiclass'],
+                        choices=['classification', 'regression', 'multiclass','dopamine'],
                         help='Type of dataset, e.g. classification or regression.'
                              'This determines the loss function used during training.')
     parser.add_argument('--multiclass_num_classes', type=int, default=3,
@@ -274,6 +274,7 @@ def modify_train_args(args: Namespace):
 
     if not ((args.dataset_type == 'classification' and args.metric in ['auc', 'prc-auc', 'accuracy']) or
             (args.dataset_type == 'regression' and args.metric in ['rmse', 'mae', 'r2']) or
+            (args.dataset_type == 'dopamine' and args.metric in ['rmse', 'mae', 'r2']) or
             (args.dataset_type == 'multiclass' and args.metric in ['cross_entropy', 'accuracy'])):
         raise ValueError(f'Metric "{args.metric}" invalid for dataset type "{args.dataset_type}".')
 

@@ -169,8 +169,28 @@ def get_loss_func(args: Namespace) -> nn.Module:
         return nn.CrossEntropyLoss(reduction='none')
 
     #todo: change the loss function here
-
+    if args.dataset_type == 'dopamine':
+        # return quantile_loss_func(0.75)
+        return quantile_loss_func
     raise ValueError(f'Dataset type "{args.dataset_type}" not supported.')
+
+
+def quantile_loss_func(preds,targets):
+
+    # def foo(preds,targets):
+    #     d = (preds-targets)
+    #     # if d <= 0:
+    #     #     return (d**2)*(alpha-1)
+    #     # else:
+    #     #     return (d**2)*(alpha)
+    #     # return ((d**2)*(alpha-(d<=0).type(torch.cuda.FloatTensor))).mean()
+    #     print(d**2)
+    #     print(0.75-(d<=0).type(torch.cuda.FloatTensor))
+    #     return ((d**2)*(0.75-(d<=0).type(torch.cuda.FloatTensor))).mean()
+    # return foo
+    d = (preds - targets)
+    return ((d ** 2) * (0.9+torch.sign(d))**2).mean()
+    # return d**2
 
 
 def prc_auc(targets: List[int], preds: List[float]) -> float:

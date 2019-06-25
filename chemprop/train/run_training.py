@@ -298,8 +298,8 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     avg_val_preds = np.array(avg_val_preds).reshape(1,-1)
     val_targets = np.array(test_targets).reshape(1, -1)
 
-    plt.plot(np.concatenate((avg_test_preds,avg_val_preds) ,axis=1),np.concatenate((test_targets,val_targets), axis=1), 'rx')
-    # plt.plot(avg_test_preds,test_targets,'rx')
+    # plt.plot(np.concatenate((avg_test_preds,avg_val_preds) ,axis=1),np.concatenate((test_targets,val_targets), axis=1), 'rx')
+    plt.plot(avg_test_preds,test_targets,'rx')
     x = np.linspace(-7, 3, 100)
     y = x
     plt.plot(x,y,'-g')
