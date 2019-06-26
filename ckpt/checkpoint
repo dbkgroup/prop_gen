@@ -1,2 +1,2 @@
-model_checkpoint_path: "molecule_dopamine_test_conditional_0"
-all_model_checkpoint_paths: "molecule_dopamine_test_conditional_0"
+model_checkpoint_path: "molecule_dopamine_test_conditional_1000"
+all_model_checkpoint_paths: "molecule_dopamine_test_conditional_1000"

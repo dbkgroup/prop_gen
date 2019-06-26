@@ -15,6 +15,10 @@ from chemprop.data import StandardScaler
 from chemprop.models import build_model, MoleculeModel
 from chemprop.nn_utils import NoamLR
 
+## Import Adaptive Loss Function
+from robust_loss_pytorch import adaptive
+import numpy as np
+
 
 def makedirs(path: str, isfile: bool = False):
     """
@@ -171,7 +175,9 @@ def get_loss_func(args: Namespace) -> nn.Module:
     #todo: change the loss function here
     if args.dataset_type == 'dopamine':
         # return quantile_loss_func(0.75)
-        return quantile_loss_func(0.7)
+        # return quantile_loss_func(0.7)
+        return adaptive_loss_func()
+
     raise ValueError(f'Dataset type "{args.dataset_type}" not supported.')
 
 
@@ -184,6 +190,15 @@ def quantile_loss_func(alpha):
 
     # return d**2
 
+def adaptive_loss_func():
+
+    def loss_func(preds,targets):
+        adaptive_lossfun = adaptive.AdaptiveLossFunction(1, np.float32,'cuda')
+        d = torch.as_tensor(preds-targets)
+        loss = torch.sum(adaptive_lossfun.lossfun(d))
+        return loss
+
+    return loss_func
 
 def prc_auc(targets: List[int], preds: List[float]) -> float:
     """
