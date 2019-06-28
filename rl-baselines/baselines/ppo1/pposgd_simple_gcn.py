@@ -408,7 +408,7 @@ def learn(args,env, policy_fn, *,
     loss_names = ["pol_surr", "pol_entpen", "vf_loss", "kl", "ent"]
 
     ## Expert loss
-    loss_expert = -tf.reduce_mean(pi_logp)
+    loss_expert = -tf.reduce_mean(pi_logp)    ##This is the expert loss because pi.pd is calculated from logits_real in the GCN policy code.
 
     ## Discriminator loss
     # loss_d_step, _, _ = discriminator(ob_real, ob_gen,args, name='d_step')
