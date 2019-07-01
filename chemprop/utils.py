@@ -177,6 +177,7 @@ def get_loss_func(args: Namespace) -> nn.Module:
         # return quantile_loss_func(0.75)
         # return quantile_loss_func(0.7)
         return adaptive_loss_func()
+        # return simple_heteroscedastic_loss_func()
 
     raise ValueError(f'Dataset type "{args.dataset_type}" not supported.')
 
@@ -199,6 +200,21 @@ def adaptive_loss_func():
         return loss
 
     return loss_func
+
+def simple_heteroscedastic_loss_func():
+
+    def loss_func(preds,targets):
+        # l = (preds-targets)**2
+        # l=l/targets
+        # return torch.mean(l)
+        w = ((100.0-1.0)/(0.059-1000000.0))*(targets-1.0) + 1.0
+        l = ((preds-targets)**2)*w
+        return torch.mean(l)
+
+
+    return loss_func
+
+
 
 def prc_auc(targets: List[int], preds: List[float]) -> float:
     """

@@ -272,6 +272,8 @@ def modify_train_args(args: Namespace):
         else:
             args.metric = 'rmse'
 
+    #todo: Change metric for dopamine dataset here
+
     if not ((args.dataset_type == 'classification' and args.metric in ['auc', 'prc-auc', 'accuracy']) or
             (args.dataset_type == 'regression' and args.metric in ['rmse', 'mae', 'r2']) or
             (args.dataset_type == 'dopamine' and args.metric in ['rmse', 'mae', 'r2']) or

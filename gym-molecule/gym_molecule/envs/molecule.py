@@ -102,6 +102,15 @@ def load_conditional(type='low'):
             data = [[row[1], row[0],id] for id, row in enumerate(reader)]
             # data = [row for id, row in enumerate(reader)]
             data = data[0:800]
+    elif type=="dopamine":
+        cwd = os.path.dirname(__file__)
+        path = os.path.join(os.path.dirname(cwd), 'dataset',
+                            'smiles_conditional.csv')
+        import csv
+        with open(path, 'r') as fp:
+            reader = csv.reader(fp, delimiter=',', quotechar='"')
+            # data = [[row[1], row[0], id] for id, row in enumerate(reader)]
+            data = [row for id, row in enumerate(reader)]
     return data
 # data = load_conditional('low')
 # data = load_conditional('high')
@@ -178,7 +187,10 @@ class MoleculeEnv(gym.Env):
             else:
                 self.max_atom = 38 + len(possible_atoms) # ZINC  + self.min_action
         elif data_type=='dopamine':
-            self.max_atom = 81 + len(possible_atoms)
+            if self.is_conditional:
+                self.max_atom = 55 + len(possible_atoms) + self.min_action
+            else:
+                self.max_atom = 81 + len(possible_atoms)
 
         self.logp_ratio = logp_ratio
         self.qed_ratio = qed_ratio
