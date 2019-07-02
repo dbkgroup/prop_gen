@@ -237,8 +237,11 @@ class MoleculeEnv(gym.Env):
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
         elif data_type=='dopamine':
+            # path = os.path.join(os.path.dirname(cwd), 'dataset',
+            #                     'Dopamine_dataset.csv')
             path = os.path.join(os.path.dirname(cwd), 'dataset',
-                                'Dopamine_dataset.csv')
+                                '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
+            #todo: experiment with changing this dataset
         self.dataset = gdb_dataset(path)
 
         ## load scaffold data if necessary
