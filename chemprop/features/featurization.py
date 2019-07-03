@@ -202,7 +202,7 @@ class BatchMolGraph:
     - smiles_batch: A list of smiles strings.
     - n_mols: The number of molecules in the batch.
     - atom_fdim: The dimensionality of the atom features.
-    - bond_fdim: The dimensionality of the bond features (technically the combined atom/bond features).
+    - bond_fdim: The dimensionality of the bond features (technically the combined atom/bond features). #todo: so the bond features are combined atom and bond features
     - a_scope: A list of tuples indicating the start and end atom indices for each molecule.
     - b_scope: A list of tuples indicating the start and end bond indices for each molecule.
     - max_num_bonds: The maximum number of bonds neighboring an atom in this batch.

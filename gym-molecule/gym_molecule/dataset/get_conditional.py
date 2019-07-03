@@ -1,8 +1,8 @@
 import csv
 import rdkit.Chem as Chem
 
-infile = 'smiles_dopamine.csv'
-outfile = 'smiles_conditional.csv'
+infile = '250k_rndm_zinc_drugs_clean.smi'
+outfile = 'zinc_dopamine.csv'
 
 with open(infile,'r') as f:
     with open(outfile,'a',newline='') as w:
