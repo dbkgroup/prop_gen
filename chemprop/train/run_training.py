@@ -304,7 +304,8 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
 
     # plt.plot(np.concatenate((avg_test_preds,avg_val_preds) ,axis=1),np.concatenate((test_targets,val_targets), axis=1), 'rx')
     plt.plot(avg_test_preds,test_targets,'bx')
-    x = np.linspace(0, 11000, 110000)
+    # x = np.linspace(0, 11000, 110000)
+    x = np.linspace(-7, 3, 100)
     y = x
     plt.plot(x,y,'-g')
     plt.xlabel("Test Predictions")
@@ -313,9 +314,12 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     plt.savefig("Prediction_Distriution.png")
     # plt.show()
     plt.clf()
+    x = np.linspace(-7, 3, 100)
+    y = x-x
+    plt.plot(x, y, '-g')
     plt.plot(test_targets, avg_test_preds-test_targets,'rx')
-    plt.xlabel("Test Predictions")
-    plt.ylabel("Test Targets")
+    plt.xlabel("Test Targets")
+    plt.ylabel("Test Errors")
     plt.title("Prediction Errors")
     plt.savefig("Prediction_Errors.png")
     # plt.show()
