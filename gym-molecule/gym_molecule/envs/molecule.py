@@ -238,6 +238,27 @@ class MoleculeEnv(gym.Env):
 
         if model2_path != '':
             self.model2 = load_checkpoint(model2_path, cuda=False)
+            args = Namespace()
+            # print('Loading training args')
+            scaler, features_scaler = load_scalers(model2_path)
+            train_args = load_args(model2_path)
+
+            # Update args with training arguments
+            for key, value in vars(train_args).items():
+                if not hasattr(args, key):
+                    setattr(args, key, value)
+
+            self.args2 = args
+            self.train_args2 = train_args
+            self.scaler2 = scaler
+            self.features_scaler2 = features_scaler
+
+        else:
+            self.model2 = None
+            self.args2 = None
+            self.train_args2 = None
+            self.scaler2 = None
+            self.features_scaler2 = None
 
         ## load expert data
         cwd = os.path.dirname(__file__)
@@ -390,7 +411,8 @@ class MoleculeEnv(gym.Env):
                       #todo: check the reward_property function  ##The control is coming here at least.
                     elif self.reward_type == 'multi':
                         reward_final +=mult_reward(self.model, self.model2, final_mol, self.scaler, self.features_scaler,
-                                                        self.train_args, self.args)
+                                                        self.train_args, self.args, self.scaler2, self.features_scaler2,
+                                                        self.train_args2, self.args2)
                     # todo: check the reward_property function  ##The control is coming here at least.
                     elif self.reward_type == 'gan':
                         reward_final = 0
@@ -1515,10 +1537,20 @@ def reward_property(model,mol,scaler,features_scaler,train_args,args):
 
 
 ###############################Multi-Objective Reward####################################################
-def mult_reward(model,model2,mol,scaler,features_scaler,train_args,args):
+def mult_reward(model,model2,mol,scaler,features_scaler,train_args,args,scaler2,features_scaler2,train_args2,args2):
     reward1 = reward_property(model,mol,scaler,features_scaler,train_args,args)  #pKI for dopamine
-    reward2 = reward_property(model2,mol,scaler,features_scaler,train_args,args) #pKI for norepinephrine
-    return reward1 - reward2
+    reward2 = reward_property(model2,mol,scaler2,features_scaler2,train_args2,args2) #pKI for norepinephrine
+    if reward1 >= 0 and reward2 < 0:
+        return reward1 - reward2
+    elif reward1 >= 0 and reward2 >= 0:
+        return reward1 - reward2
+    elif reward1 < 0 and reward2 >=0:
+        return reward1 - reward2
+    elif reward1 < 0 and reward2 < 0:
+        if reward1 < reward2:
+            return reward1 - reward2
+        else:
+            return 0.01*(reward1-reward2)
 
 
 

@@ -191,4 +191,4 @@ def predict_smile(checkpoint_path: str, smile: str):
 #Debug
 
 
-print(predict_smile("model.pt","Fc1ccc(cc1)C(OCCC1CCN(C[C@@H]2C[C@H]2c2ccccc2)CC1)c1ccc(F)cc1"))
+print(predict_smile("model_hyperopt_robust.pt","CN(C)CCC(C#N)(C1=CC=CC=C1)C1=CC=CC=C1"))
