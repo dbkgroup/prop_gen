@@ -42,7 +42,7 @@ def train(args,seed,writer=None):
         args.model_path = os.path.abspath(args.model_path)
     if args.env=='molecule':
         env = gym.make('molecule-v0')
-        env.init(data_type=args.dataset,logp_ratio=args.logp_ratio,qed_ratio=args.qed_ratio,sa_ratio=args.sa_ratio,reward_step_total=args.reward_step_total,is_normalize=args.normalize_adj,reward_type=args.reward_type,reward_target=args.reward_target,has_feature=bool(args.has_feature),is_conditional=bool(args.is_conditional),conditional=args.conditional,max_action=args.max_action,min_action=args.min_action, model_path=args.model_path) # remember call this after gym.make!!
+        env.init(data_type=args.dataset,logp_ratio=args.logp_ratio,qed_ratio=args.qed_ratio,sa_ratio=args.sa_ratio,reward_step_total=args.reward_step_total,is_normalize=args.normalize_adj,reward_type=args.reward_type,reward_target=args.reward_target,has_feature=bool(args.has_feature),is_conditional=bool(args.is_conditional),conditional=args.conditional,max_action=args.max_action,min_action=args.min_action, model_path=args.model_path, model2_path=args.model2_path) # remember call this after gym.make!!
     elif args.env=='graph':
         env = GraphEnv()
         env.init(reward_step_total=args.reward_step_total,is_normalize=args.normalize_adj,dataset=args.dataset) # remember call this after gym.make!!
@@ -127,6 +127,7 @@ def molecule_arg_parser():
     parser.add_argument('--name_full',type=str,default='')
     parser.add_argument('--name_full_load',type=str,default='')
     parser.add_argument('--model_path', type=str, default='')
+    parser.add_argument('--model2_path', type=str, default='')
 
     return parser
 

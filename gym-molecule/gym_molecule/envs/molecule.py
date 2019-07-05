@@ -122,7 +122,7 @@ class MoleculeEnv(gym.Env):
     def __init__(self):
         pass
 
-    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20, model_path='',force_final=False):
+    def init(self,data_type='zinc',logp_ratio=1, qed_ratio=1,sa_ratio=1,reward_step_total=1,is_normalize=0,reward_type='gan',reward_target=0.5,has_scaffold=False,has_feature=False,is_conditional=False,conditional='low',max_action=128,min_action=20, model_path='', model2_path='',force_final=False):
         '''
         own init function, since gym does not support passing argument
         '''
@@ -149,6 +149,9 @@ class MoleculeEnv(gym.Env):
         elif data_type=='dopamine':
             possible_atoms = ['C', 'N', 'O', 'S', 'F', 'I', 'Cl',
                               'Br']  # Dopamine binding dataset
+        elif data_type=='multi':  #multi for both dopamine and norepinephrine
+            possible_atoms = ['C', 'N', 'O', 'S', 'F', 'I', 'Cl',
+                              'Br']  # Dopamine but not norepinephrine binding dataset
 
         if self.has_feature:
             self.possible_formal_charge = np.array([-1, 0, 1])
@@ -191,6 +194,11 @@ class MoleculeEnv(gym.Env):
                 self.max_atom = 55 + len(possible_atoms) + self.min_action
             else:
                 self.max_atom = 81 + len(possible_atoms)
+        elif data_type=='multi':
+            if self.is_conditional:
+                self.max_atom = 55 + len(possible_atoms) + self.min_action
+            else:
+                self.max_atom = 55 + len(possible_atoms) #todo:try changing this value here
 
         self.logp_ratio = logp_ratio
         self.qed_ratio = qed_ratio
@@ -228,6 +236,9 @@ class MoleculeEnv(gym.Env):
             self.scaler = None
             self.features_scaler = None
 
+        if model2_path != '':
+            self.model2 = load_checkpoint(model2_path, cuda=False)
+
         ## load expert data
         cwd = os.path.dirname(__file__)
         if data_type=='gdb':
@@ -241,6 +252,11 @@ class MoleculeEnv(gym.Env):
             #                     'Dopamine_dataset.csv')
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
+        elif data_type == 'multi':
+            path = os.path.join(os.path.dirname(cwd), 'dataset',
+                                'multi_obj_dataset.csv')
+            # path = os.path.join(os.path.dirname(cwd), 'dataset',
+            #                     '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
             #todo: experiment with changing this dataset
         self.dataset = gdb_dataset(path)
 
@@ -372,6 +388,10 @@ class MoleculeEnv(gym.Env):
                     elif self.reward_type == 'pki':
                         reward_final += reward_property(self.model,final_mol,self.scaler, self.features_scaler, self.train_args, self.args)
                       #todo: check the reward_property function  ##The control is coming here at least.
+                    elif self.reward_type == 'multi':
+                        reward_final +=mult_reward(self.model, self.model2, final_mol, self.scaler, self.features_scaler,
+                                                        self.train_args, self.args)
+                    # todo: check the reward_property function  ##The control is coming here at least.
                     elif self.reward_type == 'gan':
                         reward_final = 0
                     else:
@@ -1492,6 +1512,13 @@ def reward_property(model,mol,scaler,features_scaler,train_args,args):
 
     # Ensemble predictions
     return sum_preds[0][0]
+
+
+###############################Multi-Objective Reward####################################################
+def mult_reward(model,model2,mol,scaler,features_scaler,train_args,args):
+    reward1 = reward_property(model,mol,scaler,features_scaler,train_args,args)  #pKI for dopamine
+    reward2 = reward_property(model2,mol,scaler,features_scaler,train_args,args) #pKI for norepinephrine
+    return reward1 - reward2
 
 
 
