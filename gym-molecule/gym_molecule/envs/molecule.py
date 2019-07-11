@@ -193,7 +193,7 @@ class MoleculeEnv(gym.Env):
             if self.is_conditional:
                 self.max_atom = 55 + len(possible_atoms) + self.min_action
             else:
-                self.max_atom = 81 + len(possible_atoms)
+                self.max_atom = 80 + len(possible_atoms)
         elif data_type=='multi':
             if self.is_conditional:
                 self.max_atom = 55 + len(possible_atoms) + self.min_action
@@ -272,7 +272,7 @@ class MoleculeEnv(gym.Env):
             # path = os.path.join(os.path.dirname(cwd), 'dataset',
             #                     'Dopamine_dataset.csv')
             path = os.path.join(os.path.dirname(cwd), 'dataset',
-                                '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
+                                'zinc_without_p.csv')  # ZINC
         elif data_type == 'multi':
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 'multi_obj_dataset.csv')
