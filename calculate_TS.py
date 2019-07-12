@@ -1,5 +1,6 @@
 from rdkit import DataStructs
 from rdkit.Chem import rdMolDescriptors
+from rdkit.Chem.Fingerprints import FingerprintMols
 
 def reward_target_molecule_similarity(mol, target, radius=2, nBits=2048,
                                       useChirality=True):
@@ -10,11 +11,13 @@ def reward_target_molecule_similarity(mol, target, radius=2, nBits=2048,
     :param target: rdkit mol object
     :return: float, [0.0, 1.0]
     """
-    x = rdMolDescriptors.GetMorganFingerprintAsBitVect(mol, radius=radius,
-                                                        nBits=nBits,
-                                                        useChirality=useChirality)
-    target = rdMolDescriptors.GetMorganFingerprintAsBitVect(target,
-                                                            radius=radius,
-                                                        nBits=nBits,
-                                                        useChirality=useChirality)
-    return DataStructs.TanimotoSimilarity(x, target)
+    # x = rdMolDescriptors.GetMorganFingerprintAsBitVect(mol, radius=radius,
+    #                                                     nBits=nBits,
+    #                                                     useChirality=useChirality)
+    # target = rdMolDescriptors.GetMorganFingerprintAsBitVect(target,
+    #                                                         radius=radius,
+    #                                                     nBits=nBits,
+    #                                                     useChirality=useChirality)
+    x = FingerprintMols.FingerprintMol(mol)
+    target = FingerprintMols.FingerprintMol(target)
+    return DataStructs.FingerprintSimilarity(x, target)

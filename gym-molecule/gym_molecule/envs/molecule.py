@@ -270,7 +270,7 @@ class MoleculeEnv(gym.Env):
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
         elif data_type=='dopamine':
             # path = os.path.join(os.path.dirname(cwd), 'dataset',
-            #                     'Dopamine_dataset.csv')
+            #                     'dopamine_dataset_active.csv')
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 'zinc_without_p.csv')  # ZINC
         elif data_type == 'multi':
