@@ -303,7 +303,7 @@ def run_training(args: Namespace, logger: Logger = None) -> List[float]:
     print("Smaller_Fraction: ", smaller_frac)
 
     # plt.plot(np.concatenate((avg_test_preds,avg_val_preds) ,axis=1),np.concatenate((test_targets,val_targets), axis=1), 'rx')
-    plt.plot(avg_test_preds,test_targets,'bx')
+    plt.plot(avg_test_preds,test_targets,'ro')
     # x = np.linspace(0, 11000, 110000)
     x = np.linspace(-7, 3, 100)
     y = x

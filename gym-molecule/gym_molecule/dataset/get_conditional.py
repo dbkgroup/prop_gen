@@ -1,8 +1,8 @@
 import csv
 import rdkit.Chem as Chem
 
-infile = 'multi_dataset.csv'
-outfile = 'multi_obj_dataset.csv'
+infile = 'dopamine_active_dataset.csv'
+outfile = 'smiles_active_conditional.csv'
 
 with open(infile,'r') as f:
     with open(outfile,'a',newline='') as w:
@@ -10,5 +10,5 @@ with open(infile,'r') as f:
         writer = csv.writer(w,delimiter=',')
         for line in reader:
             m = Chem.MolFromSmiles(str(line[0]))
-            if m.GetNumAtoms() < 55:
+            if m.GetNumAtoms() < 25:
                 writer.writerow([line[0]])

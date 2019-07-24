@@ -105,7 +105,7 @@ def load_conditional(type='low'):
     elif type=="dopamine":
         cwd = os.path.dirname(__file__)
         path = os.path.join(os.path.dirname(cwd), 'dataset',
-                            'smiles_conditional.csv')
+                            'smiles_active_conditional.csv')
         import csv
         with open(path, 'r') as fp:
             reader = csv.reader(fp, delimiter=',', quotechar='"')
@@ -270,14 +270,14 @@ class MoleculeEnv(gym.Env):
                                 '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
         elif data_type=='dopamine':
             # path = os.path.join(os.path.dirname(cwd), 'dataset',
-            #                     'dopamine_dataset_active.csv')
+            #                     'dopamine_active_-1.csv')
             path = os.path.join(os.path.dirname(cwd), 'dataset',
                                 'zinc_without_p.csv')  # ZINC
         elif data_type == 'multi':
-            path = os.path.join(os.path.dirname(cwd), 'dataset',
-                                'multi_obj_dataset.csv')
             # path = os.path.join(os.path.dirname(cwd), 'dataset',
-            #                     '250k_rndm_zinc_drugs_clean_sorted.smi')  # ZINC
+            #                     'multi_obj_dataset.csv')
+            path = os.path.join(os.path.dirname(cwd), 'dataset',
+                                'zinc_without_p.csv')  # ZINC
             #todo: experiment with changing this dataset
         self.dataset = gdb_dataset(path)
 
@@ -1540,17 +1540,18 @@ def reward_property(model,mol,scaler,features_scaler,train_args,args):
 def mult_reward(model,model2,mol,scaler,features_scaler,train_args,args,scaler2,features_scaler2,train_args2,args2):
     reward1 = reward_property(model,mol,scaler,features_scaler,train_args,args)  #pKI for dopamine
     reward2 = reward_property(model2,mol,scaler2,features_scaler2,train_args2,args2) #pKI for norepinephrine
-    if reward1 >= 0 and reward2 < 0:
-        return reward1 - reward2
-    elif reward1 >= 0 and reward2 >= 0:
-        return reward1 - reward2
-    elif reward1 < 0 and reward2 >=0:
-        return reward1 - reward2
-    elif reward1 < 0 and reward2 < 0:
-        if reward1 < reward2:
-            return reward1 - reward2
-        else:
-            return 0.01*(reward1-reward2)
+    # if reward1 >= 0 and reward2 < 0:
+    #     return reward1 - reward2
+    # elif reward1 >= 0 and reward2 >= 0:
+    #     return reward1 - reward2
+    # elif reward1 < 0 and reward2 >=0:
+    #     return reward1 - reward2
+    # elif reward1 < 0 and reward2 < 0:
+    #     if reward1 < reward2:
+    #         return reward1 - reward2
+    #     else:
+    #         return 0.01*(reward1-reward2)
+    return 3*reward1 - reward2
 
 
 

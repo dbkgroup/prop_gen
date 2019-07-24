@@ -24,7 +24,10 @@ def getDensityPlot(dataset,generated):
     with open(dataset,'r') as f1:
         with open(generated,'r') as f2:
             reader2 = csv.reader(f2,delimiter=',')
+            count=0
             for row2 in reader2:
+                if count>=500:
+                    break
                 f1.seek(0)
                 max_TS = -1.0
                 reader1 = csv.reader(f1, delimiter=',')
@@ -39,7 +42,8 @@ def getDensityPlot(dataset,generated):
                     # print(max_TS)
                 if max_TS==1:
                     continue
-                # print(max_TS)
+                count+=1
+                print(max_TS)
                 closest_TS += [max_TS]
 
             with open('TS.pt','wb') as w:
@@ -48,9 +52,20 @@ def getDensityPlot(dataset,generated):
             plot = sns.distplot(closest_TS)
             plot.figure.savefig('TS_plot.png')
 
+def getPropertyDistribution(dataset):
+    with open(dataset,'r') as f:
+        property=[]
+        reader = csv.reader(f,delimiter=',')
+        for row in reader:
+            property+= [float(row[4])]
+
+        with open('Property.pt' ,'wb') as w:
+            pickle.dump([property,w])
+
+
 
 
 
 if __name__ == "__main__":
     # getTS("N#CC(CCN1CC=C1N)(C1=CC=CC=C1)C1=CC=CC=C1")
-    getDensityPlot('dopamine_nodup_active.csv','molecule_dopamine_test_conditional_load_conditional.csv')
+    getDensityPlot('dopamine_active_-1.csv','load_conditional_top650.csv')
