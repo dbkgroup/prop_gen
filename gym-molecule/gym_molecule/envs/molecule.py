@@ -193,7 +193,7 @@ class MoleculeEnv(gym.Env):
             if self.is_conditional:
                 self.max_atom = 55 + len(possible_atoms) + self.min_action
             else:
-                self.max_atom = 80 + len(possible_atoms)
+                self.max_atom = 70 + len(possible_atoms)
         elif data_type=='multi':
             if self.is_conditional:
                 self.max_atom = 55 + len(possible_atoms) + self.min_action
@@ -1532,8 +1532,9 @@ def reward_property(model,mol,scaler,features_scaler,train_args,args):
     )
     sum_preds += np.array(model_preds)
 
+    qed_mol = qed(mol)
     # Ensemble predictions
-    return sum_preds[0][0]
+    return sum_preds[0][0] + qed_mol
 
 
 ###############################Multi-Objective Reward####################################################
