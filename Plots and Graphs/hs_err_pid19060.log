@@ -1,0 +1,196 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 2147483648 bytes for Failed to commit area from 0x0000000082000000 to 0x0000000102000000 of length 2147483648.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (c:/BuildAgent/work/64e6ab55ab19e5a9/src/hotspot/os/windows/os_windows.cpp:3272), pid=19060, tid=11864
+#
+# JRE version:  (11.0.2+9) (build )
+# Java VM: OpenJDK 64-Bit Server VM (11.0.2+9-b159.60, mixed mode, aot, sharing, tiered, compressed oops, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: org.jetbrains.git4idea.http.GitAskPassApp Username for 'https://github.com': 
+
+Host: Intel(R) Xeon(R) W-2195 CPU @ 2.30GHz, 36 cores, 255G,  Windows 10 , 64 bit Build 17763 (10.0.17763.475)
+Time: Sat Jun 22 14:01:48 2019 GMT Daylight Time elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001a48c607800):  JavaThread "Unknown thread" [_thread_in_vm, id=11864, stack(0x00000070b9200000,0x00000070b9300000)]
+
+Stack: [0x00000070b9200000,0x00000070b9300000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x5da82a]
+V  [jvm.dll+0x70b6c9]
+V  [jvm.dll+0x70cbe8]
+V  [jvm.dll+0x70d2b3]
+V  [jvm.dll+0x240f18]
+V  [jvm.dll+0x5d7fc4]
+V  [jvm.dll+0x5cd115]
+V  [jvm.dll+0x2fa5eb]
+V  [jvm.dll+0x2fa55a]
+V  [jvm.dll+0x2fa432]
+V  [jvm.dll+0x2ff316]
+V  [jvm.dll+0x347993]
+V  [jvm.dll+0x348096]
+V  [jvm.dll+0x347a93]
+V  [jvm.dll+0x2d5588]
+V  [jvm.dll+0x2d66c7]
+V  [jvm.dll+0x6eaac7]
+V  [jvm.dll+0x6ec22c]
+V  [jvm.dll+0x3551c9]
+V  [jvm.dll+0x6d274e]
+V  [jvm.dll+0x3bd953]
+V  [jvm.dll+0x3bfcc1]
+C  [java.exe+0x3763]
+C  [java.exe+0x17a0c]
+C  [KERNEL32.DLL+0x17974]
+C  [ntdll.dll+0x6a271]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x000001a48a177d00, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001a48c622800 GCTaskThread "GC Thread#0" [stack: 0x00000070b9300000,0x00000070b9400000] [id=10788]
+  0x000001a48c68c800 ConcurrentGCThread "G1 Main Marker" [stack: 0x00000070b9400000,0x00000070b9500000] [id=19952]
+  0x000001a48c68e000 ConcurrentGCThread "G1 Conc#0" [stack: 0x00000070b9500000,0x00000070b9600000] [id=23924]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff834685687]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001a48c603810] Heap_lock - owner thread: 0x000001a48c607800
+
+Heap address: 0x0000000082000000, size: 30688 MB, Compressed Oops mode: Non-zero based: 0x0000000082000000
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff666b00000 - 0x00007ff666b47000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\java.exe
+0x00007ff8e61f0000 - 0x00007ff8e63dd000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ff8e59f0000 - 0x00007ff8e5aa3000 	C:\Windows\System32\KERNEL32.DLL
+0x00007ff8e2690000 - 0x00007ff8e2923000 	C:\Windows\System32\KERNELBASE.dll
+0x00007ff8e5580000 - 0x00007ff8e5717000 	C:\Windows\System32\USER32.dll
+0x00007ff8e2670000 - 0x00007ff8e2690000 	C:\Windows\System32\win32u.dll
+0x00007ff8e5fa0000 - 0x00007ff8e5fc9000 	C:\Windows\System32\GDI32.dll
+0x00007ff8e24d0000 - 0x00007ff8e266a000 	C:\Windows\System32\gdi32full.dll
+0x00007ff8e2c00000 - 0x00007ff8e2ca0000 	C:\Windows\System32\msvcp_win.dll
+0x00007ff8e22c0000 - 0x00007ff8e23ba000 	C:\Windows\System32\ucrtbase.dll
+0x00007ff8cca70000 - 0x00007ff8ccce9000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.17763.557_none_05b63f68071e5b9f\COMCTL32.dll
+0x00007ff8e3e60000 - 0x00007ff8e3efe000 	C:\Windows\System32\msvcrt.dll
+0x00007ff8e3b30000 - 0x00007ff8e3e5c000 	C:\Windows\System32\combase.dll
+0x00007ff8e3510000 - 0x00007ff8e3632000 	C:\Windows\System32\RPCRT4.dll
+0x00007ff8e2b60000 - 0x00007ff8e2bde000 	C:\Windows\System32\bcryptPrimitives.dll
+0x00007ff8e3420000 - 0x00007ff8e344e000 	C:\Windows\System32\IMM32.DLL
+0x00007ff8c9c30000 - 0x00007ff8c9c47000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\vcruntime140.dll
+0x00007ff8a4ad0000 - 0x00007ff8a4b6d000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\msvcp140.dll
+0x00007ff8343a0000 - 0x00007ff834e56000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\server\jvm.dll
+0x00007ff8e3460000 - 0x00007ff8e3503000 	C:\Windows\System32\ADVAPI32.dll
+0x00007ff8e3650000 - 0x00007ff8e36ee000 	C:\Windows\System32\sechost.dll
+0x00007ff8e3640000 - 0x00007ff8e3648000 	C:\Windows\System32\PSAPI.DLL
+0x00007ff8e0160000 - 0x00007ff8e0184000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ff8d8c20000 - 0x00007ff8d8c29000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ff8dcff0000 - 0x00007ff8dcffa000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ff8e5f30000 - 0x00007ff8e5f9d000 	C:\Windows\System32\WS2_32.dll
+0x00007ff8dfdc0000 - 0x00007ff8dfded000 	C:\Windows\SYSTEM32\WINMMBASE.dll
+0x00007ff8e2b10000 - 0x00007ff8e2b5a000 	C:\Windows\System32\cfgmgr32.dll
+0x00007ff8e2210000 - 0x00007ff8e2221000 	C:\Windows\System32\kernel.appcore.dll
+0x00007ff8c4100000 - 0x00007ff8c4111000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\verify.dll
+0x00007ff8dbea0000 - 0x00007ff8dc08d000 	C:\Windows\SYSTEM32\DBGHELP.DLL
+0x00007ff8dc100000 - 0x00007ff8dc12a000 	C:\Windows\SYSTEM32\dbgcore.DLL
+0x00007ff8b7ed0000 - 0x00007ff8b7ef9000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\java.dll
+0x00007ff8b7eb0000 - 0x00007ff8b7ec7000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\zip.dll
+0x00007ff8d00a0000 - 0x00007ff8d00ab000 	C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\jimage.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin;C:\Windows\SYSTEM32;C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.17763.557_none_05b63f68071e5b9f;C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\jre64\bin\server
+
+VM Arguments:
+java_command: org.jetbrains.git4idea.http.GitAskPassApp Username for 'https://github.com': 
+java_class_path (initial): C:/Users/yash/AppData/Local/JetBrains/PyCharm Professional Edition with Anaconda plugin 2019.1.3/plugins/git4idea/lib/git4idea-rt.jar;C:/Users/yash/AppData/Local/JetBrains/PyCharm Professional Edition with Anaconda plugin 2019.1.3/lib/xmlrpc-2.0.1.jar;C:/Users/yash/AppData/Local/JetBrains/PyCharm Professional Edition with Anaconda plugin 2019.1.3/lib/commons-codec-1.10.jar;C:/Users/yash/AppData/Local/JetBrains/PyCharm Professional Edition with Anaconda plugin 2019.1.3/lib/util.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 15                                        {product} {ergonomic}
+     uint ConcGCThreads                            = 6                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 25                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 4194304                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 2147483648                                {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 32178700288                               {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 4194304                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 8178940                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 121739650                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 121739650                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+     bool UseCompressedClassPointers               = true                                 {lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                                 {lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+PATH=C:/Program Files/Git/mingw64/libexec/git-core;C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\yash\bin;C:\Program Files\Microsoft MPI\Bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NGX;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files (x86)\Bitvise SSH Client;C:\Users\yash\AppData\Local\Microsoft\WindowsApps;;C:\Users\yash\AppData\Local\JetBrains\PyCharm Professional Edition with Anaconda plugin 2019.1.3\bin;
+USERNAME=yash
+DISPLAY=:0.0
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 85 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10 , 64 bit Build 17763 (10.0.17763.475)
+
+CPU:total 36 (initial active 36) (18 cores per cpu, 2 threads per core) family 6 model 85 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, rtm, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, evex, fma
+
+Memory: 4k page, system-wide physical 261806M (23365M free)
+TotalPageFile size 383899M (AvailPageFile size 1613M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 101M, peak: 2148M
+
+vm_info: OpenJDK 64-Bit Server VM (11.0.2+9-b159.60) for windows-amd64 JRE (11.0.2+9-b159.60), built on May 17 2019 14:03:25 by "" with MS VC++ 14.0 (VS2015)
+
+END.
