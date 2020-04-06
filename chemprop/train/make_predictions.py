@@ -193,5 +193,5 @@ def predict_smile(checkpoint_path: str, smile: str):
 #Debug
 
 
-# print(predict_smile("model_hyperopt.pt","FC1=CC2=CC(N3N=NN=C3C3=C4C=CC=C3O4)=CN=C2C=C1"))
-print(qed(Chem.MolFromSmiles('CCOC1(C#N)NC2=CC(=C2Cl)C1=O')))
+# print(predict_smile("../../dopamine_test/fold_0/model_2/model.pt","CC1=CC(=C1Cl)NC2=CC(=C2Cl)Cl"))
+print(qed(Chem.MolFromSmiles('CCC(N)CC2=CC=C3C=CC=CC1=CC=C1N2C(=O)CO3')))
