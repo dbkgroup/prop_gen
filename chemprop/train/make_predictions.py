@@ -10,6 +10,9 @@ from chemprop.train.predict import predict
 from chemprop.data import MoleculeDataset
 from chemprop.data.utils import get_data, get_data_from_smiles
 from chemprop.utils import load_args, load_checkpoint, load_scalers
+from rdkit.Chem.Descriptors import qed
+from gym_molecule.envs.sascorer import calculateScore
+import rdkit.Chem as Chem
 
 
 def make_predictions(args: Namespace, smiles: List[str] = None) -> List[Optional[List[float]]]:
@@ -191,4 +194,10 @@ def predict_smile(checkpoint_path: str, smile: str):
 #Debug
 
 
-print(predict_smile("model_hyperopt.pt","FC1=CC2=CC(N3N=NN=C3C3=C4C=CC=C3O4)=CN=C2C=C1"))
+# print(predict_smile("../../dopamine_test/fold_0/model_2/model.pt","CC1=CC(=C1Cl)NC2=CC(=C2Cl)Cl"))
+if __name__ == "__main__":
+    mol = Chem.MolFromSmiles('CCCCOC1=CC1=C(NC(N)=O)C1=CC=C1O')
+    sa = -1 * calculateScore(mol)
+    print("SA score",(sa + 10) / (10 - 1))
+    print("QED",qed(mol))
+    print("pki: ", predict_smile("../../model_hyperopt.pt","CCCCOC1=CC1=C(NC(N)=O)C1=CC=C1O"))
