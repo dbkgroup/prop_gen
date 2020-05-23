@@ -1,5 +1,5 @@
-# GraphMol
-This repository serves as the codebase for the paper GraphMol, a multiobjective, computational strategy for generating molecules with desirable properties: a graph convolution and reinforcement learning approach. The code is divided into two sections : <strong> Property Prediction </strong> and <strong> Molecular Generation </strong>
+# DeepGraphMol
+This repository serves as the codebase for the paper DeepGraphMol, a multiobjective, computational strategy for generating molecules with desirable properties: a graph convolution and reinforcement learning approach. The code is divided into two sections : <strong> Property Prediction </strong> and <strong> Molecular Generation </strong>
 
 ## Property Prediction
 We use a Graph Convolutional Network followed by a Feed Forward Network to predict the property scores for molecule. This section of the code is taken from [this wonderful repository](https://github.com/chemprop/chemprop)
