@@ -6,7 +6,7 @@ We use a Graph Convolutional Network followed by a Feed Forward Network to predi
 
 ### Setup
 ```bash
- conda install numpy pandas matplotlib
+ conda install numpy pandas matplotlib hyperopt
  conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
  conda install -c rdkit rdkit
  ```
@@ -15,7 +15,7 @@ We use a Graph Convolutional Network followed by a Feed Forward Network to predi
 We first try to find optimal hyperparameters using Bayesian Optimization. Currently, the hyperparameters that can be found using this are 1) depth of the GCN encoder 2) the dimensions of the message vectors 3) the number of layers in the Feed Forward Network  4) and the Dropout constant. The code can be run as follows:<br><br>
 `python hyperparameter_optimization.py --data_path <data_path> --dataset_type <type> --num_iters <n> --config_save_path <config_path>`<br><br>
 where \<data_path\> is the path to csv file where the smiles and the corresponding property scores are stored, \<type\> can be <strong>regression</strong> or <strong>dopamine</strong> which corresponds to using mse loss and adaptive robust loss respectively, \<n\> is the number of epochs and \<config_path\> is the path to json file where the configurations are to be saved. For example: <br><br>
-`python hyperparamter_optimization.py --data_path data/dopamine_nodup.csv --dataset_type dopamine --num_iters 100 --config_save_path config.json`
+`python hyperparameter_optimization.py --data_path data/dopamine_nodup.csv --dataset_type dopamine --num_iters 100 --config_save_path config.json`
 
 ### Training
 We can use the configurations obtained from Hyperparameter Optimization or directly train the model by running the following code:<br><br>
