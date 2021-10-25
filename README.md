@@ -41,6 +41,7 @@ pip install networkx==1.11
 ```
 - Install OpenAI baseline dependencies
 ```bash
+sudo apt-get install libosmesa6-dev
 cd rl-baselines
 pip install -e .
 ```
