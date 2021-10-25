@@ -37,7 +37,7 @@ We use Proximal Policy Optimization (PPO) as the Reinforcement Learning pathway 
 ```bash
 pip install tensorflow
 conda install mpi4py
-pip install networkx=1.11
+pip install networkx==1.11
 ```
 - Install OpenAI baseline dependencies
 ```bash
