@@ -6,7 +6,7 @@ We use a Graph Convolutional Network followed by a Feed Forward Network to predi
 
 ### Setup
 ```bash
- conda install numpy pandas matplotlib hyperopt
+ conda install numpy pandas matplotlib hyperopt tensorboardX torch_dct
  conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
  conda install -c rdkit rdkit
  ```
