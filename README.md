@@ -42,7 +42,7 @@ pip install networkx==1.11
 - Install OpenAI baseline dependencies
 ```bash
 cd rl-baselines
-pip install -e
+pip install -e .
 ```
 - Install customized gym molecule env
 ```bash
