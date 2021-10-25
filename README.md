@@ -47,7 +47,7 @@ pip install -e
 - Install customized gym molecule env
 ```bash
 cd gym-molecule
-pip install -e
+pip install -e .
 ```
 ### Run Experiments
 This section contains the code to run the 5 experiments as presented in the paper. The general command line argument for running the code is as follows:<br><br>
